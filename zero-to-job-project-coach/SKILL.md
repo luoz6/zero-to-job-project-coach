@@ -1,9 +1,9 @@
 ---
-name: github-career-project-planner
-description: 面向目标岗位的 GitHub 项目发现、仓库评估、学习路线规划、简历项目描述和面试准备 skill。适用于根据岗位或岗位 JD 查找适合学习的 GitHub 项目，评估仓库是否适合当前水平，设计二次开发任务，生成可信简历 bullet，并准备项目面试追问。
+name: zero-to-job-project-coach
+description: 面向新手从 0 到找工作的项目学习与求职落地 skill。适用于根据目标岗位或岗位 JD 规划学习路线，筛选适合新手的 GitHub 项目，进行仓库评估，判断难度和简历价值，设计二次开发任务，生成可信简历 bullet，并准备项目面试追问。
 ---
 
-# GitHub Career Project Planner
+# Zero To Job Project Coach
 
 ## 关键规则
 

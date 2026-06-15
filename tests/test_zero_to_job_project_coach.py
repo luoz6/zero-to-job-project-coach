@@ -3,7 +3,7 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = ROOT / "github-career-project-planner"
+SKILL_DIR = ROOT / "zero-to-job-project-coach"
 SKILL_MD = SKILL_DIR / "SKILL.md"
 OPENAI_YAML = SKILL_DIR / "agents" / "openai.yaml"
 
@@ -59,7 +59,7 @@ def parse_openai_interface(text: str) -> dict[str, str]:
     return interface
 
 
-class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
+class ZeroToJobProjectCoachSkillTest(unittest.TestCase):
     def setUp(self) -> None:
         self.skill_text = ""
         self.frontmatter: dict[str, str] = {}
@@ -84,7 +84,7 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
         self.assertTrue(SKILL_MD.is_file(), "SKILL.md should exist")
 
         self.assertEqual(set(self.frontmatter), {"name", "description"})
-        self.assertEqual(self.frontmatter["name"], "github-career-project-planner")
+        self.assertEqual(self.frontmatter["name"], "zero-to-job-project-coach")
         self.assertGreater(len(self.frontmatter["description"]), 100)
         self.assertGreater(len(self.body), 2000)
 
@@ -255,11 +255,11 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
         self.assertIn("interface:", yaml_text)
         interface = parse_openai_interface(yaml_text)
 
-        self.assertEqual(interface.get("display_name"), "GitHub Career Project Planner")
+        self.assertEqual(interface.get("display_name"), "Zero To Job Project Coach")
         self.assertRegex(interface.get("short_description", ""), r"^.{20,120}$")
         self.assertRegex(
             interface.get("default_prompt", ""),
-            r"^Use \$github-career-project-planner .+",
+            r"^Use \$zero-to-job-project-coach .+",
         )
 
 

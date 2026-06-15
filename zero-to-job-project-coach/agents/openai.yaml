@@ -1,0 +1,4 @@
+interface:
+  display_name: "Zero To Job Project Coach"
+  short_description: "Coach beginners from zero to job-ready projects"
+  default_prompt: "Use $zero-to-job-project-coach to plan my path from beginner to job-ready projects, resume bullets, and interview preparation."
