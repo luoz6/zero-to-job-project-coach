@@ -1,4 +1,4 @@
 interface:
   display_name: "Zero To Job Project Coach"
-  short_description: "Coach beginners from zero to job-ready projects"
-  default_prompt: "Use $zero-to-job-project-coach to plan my path from beginner to job-ready projects, resume bullets, and interview preparation."
+  short_description: "Coach beginners through staged job-ready projects"
+  default_prompt: "Use $zero-to-job-project-coach to run a staged path with 阶段诊断, 项目选择, 二次开发, 简历, and 面试 preparation."
