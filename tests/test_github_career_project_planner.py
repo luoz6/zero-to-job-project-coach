@@ -85,7 +85,7 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
 
         self.assertEqual(set(self.frontmatter), {"name", "description"})
         self.assertEqual(self.frontmatter["name"], "github-career-project-planner")
-        self.assertGreater(len(self.frontmatter["description"]), 250)
+        self.assertGreater(len(self.frontmatter["description"]), 100)
         self.assertGreater(len(self.body), 2000)
 
     def test_description_covers_trigger_contexts(self) -> None:
@@ -93,14 +93,14 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
         description = self.frontmatter["description"].lower()
 
         required_terms = [
-            "job",
+            "岗位",
             "github",
-            "project",
-            "learning roadmap",
-            "resume",
-            "interview",
-            "job description",
-            "repository evaluation",
+            "项目",
+            "学习路线",
+            "简历",
+            "面试",
+            "jd",
+            "仓库评估",
         ]
 
         for term in required_terms:
@@ -110,43 +110,43 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
         self.require_skill()
 
         expected_headings = [
-            "## Critical Rules",
-            "## Inputs And Conflict Handling",
-            "## Search Strategy",
-            "## Repository Evaluation",
-            "## Output Contract",
-            "## Second-Development Guidance",
-            "## Source Structure Review",
-            "## Anti-Stall Learning Route",
-            "## Resume And Interview Guidance",
+            "## 关键规则",
+            "## 输入与冲突处理",
+            "## 搜索策略",
+            "## 仓库评估",
+            "## 输出契约",
+            "## 二次开发指导",
+            "## 源码结构评估",
+            "## 防卡壳学习路线",
+            "## 简历与面试指导",
         ]
 
         for heading in expected_headings:
             self.assertIn(heading, self.body)
 
         lower = self.body.lower()
-        self.assertLess(self.body.index("## Critical Rules"), self.body.index("## Search Strategy"))
-        self.assertIn("do not recommend projects only because they have many stars", lower)
-        self.assertIn("do not fabricate", lower)
-        self.assertIn("lower the recommendation confidence", lower)
+        self.assertLess(self.body.index("## 关键规则"), self.body.index("## 搜索策略"))
+        self.assertIn("不得只因为 star 多就推荐项目", lower)
+        self.assertIn("不得编造", lower)
+        self.assertIn("降低推荐置信度", lower)
 
     def test_body_contains_search_strategy_and_degraded_path(self) -> None:
         self.require_skill()
         lower = self.body.lower()
 
         required_terms = [
-            "current github information",
-            "degraded path",
-            "repository links",
-            "readme content",
-            "trust the user's stated level",
+            "当前 github 信息",
+            "降级路径",
+            "仓库链接",
+            "readme 内容",
+            "优先相信用户自述水平",
             "spring boot",
-            "docker-compose",
+            "docker compose",
             "site:github.com",
             "awesome",
             "interview",
             "learning notes",
-            "adjust the query",
+            "调整查询",
         ]
 
         for term in required_terms:
@@ -157,16 +157,16 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
         lower = self.body.lower()
 
         required_terms = [
-            "non-negotiable",
-            "important signals",
-            "bonus signals",
-            "visible maintenance signals",
-            "issue resolution rate",
-            "pr merge rate",
-            "maintainer response time",
-            "without github rest api or graphql api",
-            "do not claim exact",
-            "not recommended and why",
+            "不可妥协维度",
+            "重要维度",
+            "加分维度",
+            "可见维护信号",
+            "issue 解决率",
+            "pr 合并率",
+            "维护者响应时间",
+            "没有 github rest api 或 graphql api",
+            "不得声称精确统计",
+            "明确不推荐及原因",
         ]
 
         for term in required_terms:
@@ -184,39 +184,39 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
             "简历项目描述",
             "面试准备问题",
             "下一步行动计划",
-            "Narrow Output Modes",
-            "Project recommendations only",
-            "Learning route only",
-            "Resume-only",
-            "Interview-only",
-            "Single repository link",
+            "窄输出模式",
+            "只要项目推荐",
+            "只要学习路线",
+            "只要简历描述",
+            "只要面试准备",
+            "单个仓库链接",
         ]
 
         for section in required_sections:
             self.assertIn(section, self.body)
 
-        self.assertIn("scale the schedule to the user's time budget", self.body)
+        self.assertIn("根据用户时间预算缩放计划", self.body)
 
     def test_body_contains_second_development_and_quantitative_baselines(self) -> None:
         self.require_skill()
         lower = self.body.lower()
 
         required_terms = [
-            "business loop",
-            "engineering quality",
-            "architecture upgrade",
-            "performance and reliability",
-            "security and permissions",
-            "deployment and observability",
-            "at least two layers",
-            "technical anchors",
+            "业务闭环",
+            "工程质量",
+            "架构升级",
+            "性能与可靠性",
+            "安全与权限",
+            "部署与可观测性",
+            "至少覆盖两层",
+            "技术锚点",
             "redis",
             "kafka",
             "prometheus",
             "opentelemetry",
-            "quantitative baseline",
-            "expected target",
-            "do not present expected targets as completed results",
+            "量化基准",
+            "预期目标",
+            "不得把预期目标写成已完成结果",
             "p95",
         ]
 
@@ -228,22 +228,22 @@ class GitHubCareerProjectPlannerSkillTest(unittest.TestCase):
         lower = self.body.lower()
 
         required_terms = [
-            "source structure review",
+            "源码结构评估",
             "package.json",
             "pom.xml",
             "dockerfile",
             "docker-compose.yml",
-            "anti-stall",
-            "minimum startup path",
-            "environment checklist",
-            "common blockers",
-            "timebox",
-            "verification signal",
-            "30 to 45 minutes",
-            "1 to 2 hours",
-            "trade-off",
-            "pitfalls",
-            "why this technology",
+            "防卡壳",
+            "最小启动路径",
+            "环境检查清单",
+            "常见卡点",
+            "时间盒",
+            "验收信号",
+            "30 到 45 分钟",
+            "1 到 2 小时",
+            "技术选型",
+            "踩坑",
+            "为什么选择这个技术",
         ]
 
         for term in required_terms:

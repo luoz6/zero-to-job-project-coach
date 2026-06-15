@@ -1,199 +1,199 @@
 ---
 name: github-career-project-planner
-description: Job-targeted GitHub project discovery, repository evaluation, learning roadmap planning, resume project writing, and interview preparation. Use when Codex needs to help a user find suitable GitHub projects for a target job, analyze a job description, evaluate repositories beyond stars, create a project learning roadmap, design second-development tasks, write credible resume bullets, or prepare interview talking points.
+description: 面向目标岗位的 GitHub 项目发现、仓库评估、学习路线规划、简历项目描述和面试准备 skill。适用于根据岗位或岗位 JD 查找适合学习的 GitHub 项目，评估仓库是否适合当前水平，设计二次开发任务，生成可信简历 bullet，并准备项目面试追问。
 ---
 
 # GitHub Career Project Planner
 
-## Critical Rules
+## 关键规则
 
-- Verify current GitHub information with web access before recommending repositories. Repository activity, archived status, stars, forks, releases, and visible maintenance signals change over time.
-- If web access is unavailable, use the degraded path: say current GitHub status cannot be verified, ask the user for repository links, README content, or project summaries, and mark repository activity as not real-time verified.
-- Do not recommend projects only because they have many stars. Prioritize job fit, learning value, resume value, runnable setup, source structure, and second-development potential.
-- Do not fabricate issue resolution rate, PR merge rate, maintainer response time, contributor trend, or community activity. Without GitHub REST API or GraphQL API, only describe visible maintenance signals and uncertainty.
-- Distinguish "recommended with risks" from "not recommended and why".
-- Keep resume claims credible. Do not present suggested work, expected targets, or future improvements as completed results.
-- If source structure cannot be reviewed for a high-priority repository, say so and lower the recommendation confidence.
+- 推荐仓库前必须尽量联网核实当前 GitHub 信息。仓库活跃度、是否归档、star、fork、release 和可见维护信号都会变化。
+- 如果无法联网，走降级路径：明确说明无法核实最新 GitHub 状态，请用户提供仓库链接、README 内容或项目摘要，并标注“仓库活跃度未实时核实”。
+- 不得只因为 star 多就推荐项目。优先考虑岗位匹配度、学习价值、简历价值、可运行性、源码结构和二次开发空间。
+- 不得编造 issue 解决率、PR 合并率、维护者响应时间、贡献者趋势或社区活跃度。没有 GitHub REST API 或 GraphQL API 时，只能描述可见维护信号和不确定性。
+- 必须区分“推荐但有风险”和“明确不推荐及原因”。
+- 简历表述必须可信。不得把建议改造、预期目标或未来计划写成已完成结果。
+- 如果高优先级仓库无法完成源码结构评估，必须说明原因并降低推荐置信度。
 
-## Inputs And Conflict Handling
+## 输入与冲突处理
 
-Parse the user's target job, level, constraints, and optional job description.
+解析用户的目标岗位、当前水平、约束条件和可选岗位 JD。
 
-Support inputs such as:
+支持以下输入：
 
-- Target role: Java backend, frontend, AI application developer, data analyst, DevOps, full-stack, mobile developer.
-- Job description or hiring post.
-- Experience level: beginner, student, internship, junior, mid-level, career switcher.
-- Constraints: preferred language, framework, difficulty, time budget, output language, resume-only output, learning-route-only output, or a single repository link.
+- 目标岗位：Java 后端、前端、AI 应用开发、数据分析、DevOps、全栈、移动端开发等。
+- 岗位 JD 或招聘描述。
+- 经验水平：初学者、学生、实习、校招、初级、中级、转行。
+- 约束条件：偏好的语言、框架、难度、时间预算、输出语言、只要简历描述、只要学习路线，或单个仓库链接。
 
-Use low-risk defaults when safe:
+低风险场景可以做默认假设：
 
-- If the user provides a job description but no level, infer level from title, years, and required skills.
-- If the user says "Java backend campus hire" without stack details, assume Spring Boot, MySQL, Redis, messaging, deployment, and basic engineering practices.
-- If the user provides one repository link and asks for resume packaging, evaluate that repository instead of searching for more projects.
+- 用户提供 JD 但没说水平：根据岗位标题、年限和技能要求推断目标水平。
+- 用户说“Java 后端校招”但没给技术栈：默认围绕 Spring Boot、MySQL、Redis、消息队列、部署和基础工程化筛选。
+- 用户提供一个仓库链接并要求包装进简历：直接评估该仓库，不再搜索更多项目。
 
-Ask one concise question when direction is high-risk ambiguous:
+高风险不明确场景要提出一个简短问题：
 
-- No target role, no job description, and no repository link.
-- Conflicting roles, such as frontend intern and senior backend architect.
-- Resume claims are requested but completed work or planned work boundaries are unclear.
+- 没有目标岗位、没有 JD、也没有仓库链接。
+- 岗位方向互相冲突，例如“前端实习”和“资深后端架构”同时出现。
+- 用户要求生成简历成果，但没有说明已完成内容或计划完成边界。
 
-When the user's level conflicts with the job description, trust the user's stated level and use the job description as the gap target. Explain the gap between current level and target requirements, then ask whether they want a gap-closing route or short-term resume packaging if needed.
+当用户自述水平和岗位 JD 冲突时，优先相信用户自述水平，并把 JD 作为差距目标。说明“当前水平”和“目标岗位要求”的差距；必要时询问用户要“补差距路线”还是“短期简历包装”。
 
-## Search Strategy
+## 搜索策略
 
-Do not search only broad phrases such as `Java Backend Project`, `frontend project`, or `AI project`. These often return learning notes, interview repositories, awesome lists, project collections, and stale examples.
+不要只搜索 `Java Backend Project`、`frontend project`、`AI project` 这类宽泛词。这类查询容易返回学习笔记、面试题仓库、awesome list、项目合集和过时示例。
 
-Build precise searches by combining:
+组合以下信号构造精准搜索：
 
-- Role technologies: `Spring Boot`, `Redis`, `Kafka`, `React`, `Next.js`, `FastAPI`, `LangChain`, `Kubernetes`.
-- Project shapes: `ecommerce`, `blog`, `mall`, `chat`, `workflow`, `admin`, `dashboard`, `rag`, `microservices`, `observability`.
-- Runnable signals: `docker-compose`, `demo`, `deployment`, `production-ready`, `starter`, `example app`.
-- Exclusions: `awesome`, `interview`, `notes`, `learning notes`, `tutorial-list`, `roadmap`, `八股`, `面试`, `学习笔记`.
-- GitHub focus: prefer primary GitHub repository pages over third-party lists, blogs, or ranking pages.
+- 岗位核心技术：`Spring Boot`、`Redis`、`Kafka`、`React`、`Next.js`、`FastAPI`、`LangChain`、`Kubernetes`。
+- 项目形态：`ecommerce`、`blog`、`mall`、`chat`、`workflow`、`admin`、`dashboard`、`rag`、`microservices`、`observability`。
+- 可运行信号：`docker-compose`、`demo`、`deployment`、`production-ready`、`starter`、`example app`。
+- 排除词：`awesome`、`interview`、`notes`、`learning notes`、`tutorial-list`、`roadmap`、`八股`、`面试`、`学习笔记`。
+- GitHub 限定：优先打开 GitHub 仓库主页，不只依赖第三方榜单、博客或项目合集。
 
-Useful query patterns:
+可用搜索表达式示例：
 
-- Java backend intern: `site:github.com spring boot redis docker-compose ecommerce OR mall`
-- Java microservices: `site:github.com spring cloud gateway nacos sentinel seata docker-compose`
-- Frontend engineer: `site:github.com next.js dashboard auth prisma docker`
-- AI application developer: `site:github.com rag fastapi langchain vector database docker`
-- DevOps: `site:github.com kubernetes prometheus grafana terraform example`
+- Java 后端实习：`site:github.com spring boot redis docker-compose ecommerce OR mall`
+- Java 微服务：`site:github.com spring cloud gateway nacos sentinel seata docker-compose`
+- 前端工程师：`site:github.com next.js dashboard auth prisma docker`
+- AI 应用开发：`site:github.com rag fastapi langchain vector database docker`
+- DevOps：`site:github.com kubernetes prometheus grafana terraform example`
 
-If result quality is poor, adjust the query and search again instead of forcing weak recommendations.
+如果候选结果质量差，调整查询后重新搜索，不要硬凑推荐。
 
-Before recommending a repository, open the repository page when possible and verify project positioning, tech stack, README quality, and recent visible maintenance signals.
+推荐前尽量打开候选仓库主页，核实项目定位、技术栈、README 质量和最近可见维护信号。
 
-## Repository Evaluation
+## 仓库评估
 
-Evaluate repositories in three priority tiers.
+按三档优先级评估仓库。
 
-Non-negotiable:
+不可妥协维度：
 
-- Match the target role and stack.
-- Fit the user's current level, or be decomposable into a realistic learning path.
-- Have resume packaging value.
-- Allow original second-development work instead of only copying the README.
+- 匹配目标岗位和技术栈。
+- 适合用户当前阶段，或能拆成现实可执行的学习路径。
+- 具备简历包装价值。
+- 能做原创二次开发，而不是只照抄 README。
 
-Important signals:
+重要维度：
 
-- README and setup documentation are clear.
-- The repository has visible maintenance signals or remains useful despite low activity.
-- Architecture and module boundaries are readable.
-- The project supports interview discussion.
+- README 和启动文档清晰。
+- 仓库有可见维护信号，或即使维护较少也仍有明确学习价值。
+- 架构和模块边界可读。
+- 项目具备面试讨论价值。
 
-Bonus signals:
+加分维度：
 
-- Visible issue/PR or community maintenance signals are positive, but do not claim exact statistics.
-- Deployment, tests, examples, or demo environments exist.
-- Recent commits, releases, discussions, or documentation updates provide concrete evidence of activity.
-- The project covers multiple target-job skills.
+- 可见 issue/PR 或社区维护信号较好，但不得声称精确统计。
+- 有部署、测试、示例或 demo 环境。
+- 最近提交、release、讨论或文档更新能提供具体活跃证据。
+- 项目能覆盖目标岗位的多个核心技能点。
 
-For popular but unsuitable projects, add them under `不推荐及原因` with specific reasons such as too hard for the user's level, framework-source oriented, not runnable, too tutorial-like, or poor short-term resume value.
+对热门但不适合的项目，放在 `不推荐及原因` 下，并说明具体原因，例如复杂度过高、偏框架源码、不易运行、过于教程化、短期简历价值低。
 
-## Output Contract
+## 输出契约
 
-Use Chinese section titles by default unless the user asks for another language.
+除非用户要求其他语言，默认使用中文标题。
 
-Default full output:
+完整输出结构：
 
-1. `岗位能力拆解`: Target-role skills, project types, and capability keywords.
-2. `GitHub 项目推荐`: Repository link, stack, difficulty, recommendation reason, risk notes, learning priority, and a `不推荐及原因` subsection for popular but unsuitable projects.
-3. `项目学习路线`: Setup, reading order, core modules, experiments, milestones, and a schedule that scales to the user's time budget. Always scale the schedule to the user's time budget. If no time budget is given, state a 3 to 4 week assumption.
-4. `二次开发任务`: Concrete second-development tasks by user level. Each recommended project should cover at least two layers from business loop, engineering quality, architecture upgrade, performance and reliability, security and permissions, or deployment and observability.
-5. `简历项目描述`: Resume-ready bullets with project background, stack, responsibilities, highlights, and credible quantitative targets or measured outcomes. Expected targets must be labeled as expected target or to-be-measured, not completed fact.
-6. `面试准备问题`: Architecture, trade-off, performance, debugging, deployment, security, extension, and `技术选型与踩坑` questions.
-7. `下一步行动计划`: A short plan for the next 3 to 7 days.
+1. `岗位能力拆解`：目标岗位所需技能、项目类型和能力关键词。
+2. `GitHub 项目推荐`：仓库链接、技术栈、难度、推荐理由、风险说明、学习优先级，并包含 `不推荐及原因` 子项。
+3. `项目学习路线`：启动方式、代码阅读顺序、核心模块、实验任务、里程碑，并根据用户时间预算缩放计划。必须根据用户时间预算缩放计划；如果用户没给时间预算，明确按 3 到 4 周假设。
+4. `二次开发任务`：按用户水平给出具体改造任务。每个推荐项目至少覆盖两层改造方向：业务闭环、工程质量、架构升级、性能与可靠性、安全与权限、部署与可观测性。
+5. `简历项目描述`：包含项目背景、技术栈、个人职责、亮点、可信量化目标或实测结果。预期目标必须标注为“预期目标”或“完成后待实测”，不能写成既成事实。
+6. `面试准备问题`：覆盖架构、取舍、性能、调试、部署、安全、扩展和 `技术选型与踩坑`。
+7. `下一步行动计划`：给出未来 3 到 7 天的短期执行计划。
 
-Narrow Output Modes:
+窄输出模式：
 
-- Project recommendations only: keep `岗位能力拆解` and `GitHub 项目推荐`; omit detailed roadmap and resume bullets.
-- Learning route only: keep `GitHub 项目推荐`, `项目学习路线`, `二次开发任务`, and `下一步行动计划`.
-- Resume-only: keep a repository summary, verifiable stack, 3 to 5 resume bullets, technical anchors, quantitative baselines, and 5 to 8 interview follow-up questions; omit the full recommendation table and weekly plan.
-- Interview-only: keep project summary and `面试准备问题`, grouped by architecture, technical difficulty, trade-off, and pitfalls.
-- Single repository link: do not output a multi-project recommendation table; evaluate that repository, then provide learning route, second-development tasks, resume bullets, and interview preparation.
+- 只要项目推荐：保留 `岗位能力拆解` 和 `GitHub 项目推荐`，省略详细路线和简历 bullet。
+- 只要学习路线：保留 `GitHub 项目推荐`、`项目学习路线`、`二次开发任务` 和 `下一步行动计划`。
+- 只要简历描述：保留项目摘要、可核实技术栈、3 到 5 条简历 bullet、技术锚点、量化基准，以及 5 到 8 个面试追问；省略完整推荐表和周计划。
+- 只要面试准备：保留项目摘要和 `面试准备问题`，按架构、技术难点、技术取舍和踩坑组织。
+- 单个仓库链接：不输出多项目推荐表；直接评估该仓库，并给出学习路线、二次开发任务、简历描述和面试准备。
 
-## Second-Development Guidance
+## 二次开发指导
 
-Do not stop at generic tasks such as "add login", "add a page", or "improve UI". Propose layered changes based on the role and project type.
+不要停留在“增加登录”“添加页面”“优化 UI”这类泛化建议。根据岗位和项目类型提出分层改造。
 
-Second-development layers:
+二次开发层级：
 
-- Business loop: order state machine, approval flow, payment callback, inventory deduction, permission approval, notifications, import/export.
-- Engineering quality: unit tests, integration tests, API docs, error-code conventions, logging conventions, configuration layering, CI checks, Docker Compose one-command startup.
-- Architecture upgrade: module boundaries, domain boundaries, cache strategy, async jobs, message queues, rate limiting, circuit breaking, distributed locks, read/write splitting, multi-tenancy.
-- Performance and reliability: slow query optimization, cache penetration/breakdown/avalanche handling, load testing, metrics, alerts, tracing, graceful degradation.
-- Security and permissions: RBAC, JWT refresh, API authorization, data permissions, audit logs, sensitive data masking, basic security hardening.
-- Deployment and observability: Dockerfile, docker-compose, environment templates, health checks, Prometheus, Grafana, OpenTelemetry, log collection.
+- 业务闭环：订单状态机、审批流、支付回调、库存扣减、权限审批、消息通知、数据导入导出。
+- 工程质量：单元测试、集成测试、API 文档、错误码规范、日志规范、配置分层、CI 检查、Docker Compose 一键启动。
+- 架构升级：模块边界、领域边界、缓存策略、异步任务、消息队列、限流熔断、分布式锁、读写分离、多租户。
+- 性能与可靠性：慢查询优化、缓存穿透/击穿/雪崩处理、压测、指标、告警、链路追踪、故障降级。
+- 安全与权限：RBAC、JWT 刷新、接口鉴权、数据权限、审计日志、敏感信息脱敏、基础安全加固。
+- 部署与可观测性：Dockerfile、docker-compose、环境变量模板、健康检查、Prometheus、Grafana、OpenTelemetry、日志采集。
 
-Each second-development suggestion must include:
+每条二次开发建议必须包含：
 
-- Task goal: why it matters for the target job.
-- Technical entry point: modules or components to modify or add.
-- Technical anchors: concrete middleware, frameworks, protocols, tools, or components such as Redis, Kafka, RabbitMQ, Elasticsearch, PostgreSQL, MySQL, Docker, Kubernetes, Prometheus, Grafana, OpenTelemetry, Nginx, JWT, OAuth2, RBAC, Spring Security, Celery, BullMQ, Prisma, LangChain, pgvector, or Milvus.
-- Deliverable: API, page, deployment URL, load-test report, architecture diagram, README, or demo flow.
-- Resume expression: a credible bullet with a quantitative baseline or expected metric range.
-- Difficulty: beginner, campus/junior, or mid-level.
+- 任务目标：为什么这个改造对目标岗位有价值。
+- 技术切入点：要修改或新增哪些模块/组件。
+- 技术锚点：明确中间件、框架、协议、工具或组件，例如 Redis、Kafka、RabbitMQ、Elasticsearch、PostgreSQL、MySQL、Docker、Kubernetes、Prometheus、Grafana、OpenTelemetry、Nginx、JWT、OAuth2、RBAC、Spring Security、Celery、BullMQ、Prisma、LangChain、pgvector、Milvus。
+- 可交付成果：API、页面、部署地址、压测报告、架构图、README 或 demo 流程。
+- 简历表达：一条可信 bullet，并带有量化基准或预期指标范围。
+- 难度等级：初学者、校招/初级、中级。
 
-Quantitative baseline rules:
+量化基准规则：
 
-- Every technical change must include a measurable indicator, such as response time, throughput, cache hit rate, slow query count, build time, deployment time, error rate, test coverage, resource usage, task latency, or manual operation time.
-- Use reasonable ranges, for example: "expected target: reduce product-detail API P95 latency from 300-800ms to 80-200ms".
-- If there is no load test or log data, write "expected target" or "measure after completion". Do not present expected targets as completed results.
-- Prefer resume bullets in the shape "Designed and implemented X, targeting/measuring Y, supporting Z scenario".
-- For beginner projects, use lightweight metrics such as endpoint count, test case count, startup steps reduced from N to M, or manual configuration replaced by one-command startup.
+- 每个技术改造必须包含可验证指标，例如响应时间、吞吐量、缓存命中率、慢查询数量、构建时间、部署耗时、错误率、测试覆盖率、资源占用、任务延迟、人工操作耗时。
+- 使用合理范围，例如“预期目标：将商品详情接口 P95 响应时间从 300-800ms 降到 80-200ms”。
+- 如果没有压测或日志数据，必须写成“预期目标”或“完成后待实测”。不得把预期目标写成已完成结果。
+- 简历 bullet 优先使用“设计并实现 X，目标/实测 Y，支撑 Z 场景”的结构。
+- 初学者项目可以使用轻量指标，例如接口数量、测试用例数量、启动步骤从 N 步减少到 M 步、手动配置改为一键启动。
 
-## Source Structure Review
+## 源码结构评估
 
-For high-priority repositories that may become deep-learning or resume projects, do not rely only on README. Review the repository skeleton when possible.
+对准备深入学习或写进简历的高优先级仓库，不能只看 README。尽量查看仓库骨架。
 
-Check:
+检查：
 
-- Entry points such as `main`, `app`, `server`, `src`, `cmd`, `packages`, or framework-specific entry files.
-- Dependency and startup files such as `package.json`, `pom.xml`, `build.gradle`, `requirements.txt`, `pyproject.toml`, `Dockerfile`, `docker-compose.yml`, `.env.example`.
-- Module boundaries such as controller/service/repository, domain/application/infrastructure, frontend/backend, apps/packages, or services.
-- Tests, CI, deployment templates, and environment examples.
-- Risks such as giant single-file projects, missing startup docs, stale dependency versions, hard-coded secrets, screenshots without code, or README-only repositories.
+- 入口文件或目录，例如 `main`、`app`、`server`、`src`、`cmd`、`packages` 或框架约定入口。
+- 依赖和启动文件，例如 `package.json`、`pom.xml`、`build.gradle`、`requirements.txt`、`pyproject.toml`、`Dockerfile`、`docker-compose.yml`、`.env.example`。
+- 模块边界，例如 controller/service/repository、domain/application/infrastructure、frontend/backend、apps/packages、services。
+- 测试、CI、部署模板和环境示例。
+- 明显风险，例如单文件巨型项目、缺少启动说明、依赖版本过旧、硬编码密钥、只有截图没有代码、只有 README 没有可运行实现。
 
-If source structure cannot be checked, write "未完成源码骨架核验" and lower the recommendation confidence.
+如果无法查看源码结构，写明“未完成源码骨架核验”，并降低推荐置信度。
 
-## Anti-Stall Learning Route
+## 防卡壳学习路线
 
-Prioritize reducing failure in the startup phase.
+学习路线要优先降低用户在启动阶段失败的概率。
 
-Each learning route should include:
+每个学习路线应包含：
 
-- Minimum startup path: run the smallest useful flow first, preferably with Docker Compose, official demo, sample config, or mock data.
-- Environment checklist: language version, package manager, database, cache, middleware, environment variables, ports.
-- Common blockers: dependency install failure, database initialization failure, missing environment variables, port conflicts, version mismatch, CORS, container startup failure.
-- Degraded path: if full startup fails within 1 to 2 hours, inspect module structure, run tests, start a minimal service, mock external dependencies, or switch to a backup project.
-- Verification signal: what counts as "running", such as homepage access, login success, core API response, queue consumption, seeded database, or closed demo flow.
-- Timebox: set hard limits for startup, reading, second development, and resume packaging.
+- 最小启动路径：先跑最小可用流程，优先使用 Docker Compose、官方 demo、示例配置或 mock 数据。
+- 环境检查清单：语言版本、包管理器、数据库、缓存、中间件、环境变量、端口。
+- 常见卡点：依赖安装失败、数据库初始化失败、环境变量缺失、端口冲突、版本不兼容、CORS、容器启动失败。
+- 降级路径：完整启动 1 到 2 小时内失败时，先看模块结构、运行测试、启动最小服务、mock 外部依赖，或切换到备选项目。
+- 验收信号：什么算“跑通”，例如首页可访问、登录成功、核心接口返回、队列消费成功、数据库有种子数据、demo 流程闭环。
+- 时间盒：为启动、阅读、二次开发和简历整理设置硬性上限。
 
-Timebox defaults:
+默认时间盒：
 
-- Candidate repository evaluation: 10 to 15 minutes per repository.
-- Full environment startup: 1 to 2 hours before using the degraded path.
-- Single blocker: 30 to 45 minutes before recording the error and changing approach.
-- Second-development task: split into 0.5 to 2 day tasks.
-- Resume packaging: reserve at least 0.5 day for README, architecture diagram, screenshots, load-test evidence, or validation notes.
+- 候选仓库评估：每个仓库 10 到 15 分钟。
+- 完整环境启动：最多 1 到 2 小时，超过后进入降级路径。
+- 单个卡点：连续排查 30 到 45 分钟后记录错误并改变策略。
+- 二次开发任务：拆成 0.5 到 2 天的小任务。
+- 简历整理：至少预留 0.5 天整理 README、架构图、截图、压测证据或验证记录。
 
-## Resume And Interview Guidance
+## 简历与面试指导
 
-Resume bullets must be credible and defensible.
+简历 bullet 必须可信、可防守。
 
-- Separate completed work from planned improvements.
-- Attach technical anchors and quantitative baselines to technical changes.
-- Use expected target or to-be-measured wording when there is no evidence yet.
-- Avoid vague claims such as "used Redis to improve performance" without scenario, metric, and validation method.
+- 区分已完成工作和计划改造。
+- 技术改造要绑定技术锚点和量化基准。
+- 没有证据时使用“预期目标”或“完成后待实测”。
+- 避免“使用 Redis 提升性能”这类没有场景、指标和验证方式的空泛表达。
 
-Interview preparation must include `技术选型与踩坑`.
+面试准备必须包含 `技术选型与踩坑`。
 
-Cover:
+覆盖：
 
-- Why this technology.
-- What alternatives were considered.
-- What cost or complexity it introduces.
-- What can go wrong.
-- How to validate the improvement.
-- How to roll back or degrade gracefully.
+- 为什么选择这个技术。
+- 考虑过哪些替代方案。
+- 引入了什么成本或复杂度。
+- 可能出什么问题。
+- 如何验证改造有效。
+- 如何回滚或降级。
