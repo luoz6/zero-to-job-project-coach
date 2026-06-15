@@ -44,6 +44,8 @@ def parse_frontmatter(text: str) -> tuple[dict[str, str], str]:
 
 
 def parse_openai_interface(text: str) -> dict[str, str]:
+    # This intentionally supports only the simple interface contract used here.
+    # If openai.yaml grows multiline YAML values, replace this with yaml.safe_load.
     interface: dict[str, str] = {}
     in_interface = False
     for raw_line in text.splitlines():
@@ -129,6 +131,8 @@ class ZeroToJobProjectCoachV2Test(unittest.TestCase):
                 "不得编造 issue 解决率",
                 "不得把建议改造",
                 "按需读取 reference",
+                "唯一真理",
+                "严禁使用预训练数据自行发散或降低标准",
                 "Phase 1 不输出高压追问",
                 "Phase 2 不提前生成正式简历 bullet",
                 "低风险默认假设",
@@ -140,6 +144,7 @@ class ZeroToJobProjectCoachV2Test(unittest.TestCase):
                 "跳过卡点",
                 "待验证",
                 "源码结构评估结论",
+                "明确卡点提问",
                 "最小 Phase 1",
                 '用户场景"学习路线"',
                 '用户场景"单个仓库链接"',
@@ -303,6 +308,8 @@ class ZeroToJobProjectCoachV2Test(unittest.TestCase):
                 "投递计划",
                 "Markdown 表格",
                 "CSV 代码块",
+                "静态行为评测基线",
+                "不是自动化模型评测",
             ],
         )
 

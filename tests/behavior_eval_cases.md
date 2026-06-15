@@ -1,5 +1,7 @@
 # Zero To Job Project Coach v2 行为评测用例
 
+本文件是静态行为评测基线，用于防止关键场景和风险语句在重构中被删除；不是自动化模型评测，也不会实际调用 OpenAI、promptfoo 或 LLM-as-a-judge。未来如需真实行为验证，应将这些 Case 作为 prompt 输入并接入独立裁判。
+
 ## Case 1: 跳过 Phase 2，直接写简历
 
 - 用户输入：我不想做二次开发，直接帮我写简历。
