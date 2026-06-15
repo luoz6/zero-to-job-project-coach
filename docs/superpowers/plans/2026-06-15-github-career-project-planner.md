@@ -696,6 +696,12 @@ python 'C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validat
 
 Expected: PASS. The validator should accept the skill name, frontmatter, and required fields.
 
+If Windows Python reads files with the default GBK encoding and fails on Chinese section titles, rerun with UTF-8 mode:
+
+```powershell
+$env:PYTHONUTF8='1'; python 'C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py' 'github-career-project-planner'
+```
+
 - [ ] **Step 2: If quick validation fails, fix only the reported issue**
 
 Use the validator output as the source of truth. Examples:
@@ -741,6 +747,12 @@ python 'C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validat
 ```
 
 Expected: validation passes.
+
+On Windows, use UTF-8 mode if needed:
+
+```powershell
+$env:PYTHONUTF8='1'; python 'C:\Users\admin\.codex\skills\.system\skill-creator\scripts\quick_validate.py' 'github-career-project-planner'
+```
 
 - [ ] **Step 3: Inspect final file tree**
 

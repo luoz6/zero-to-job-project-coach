@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub Career Project Planner"
+  short_description: "Find job-targeted GitHub projects"
+  default_prompt: "Use $github-career-project-planner to find GitHub projects for my target job and turn them into a learning roadmap, resume project, and interview plan."
