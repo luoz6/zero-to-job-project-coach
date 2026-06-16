@@ -159,7 +159,8 @@
 
 ### 下一步建议
 
-- 先用 1 轮主搜索 + 1 轮补充搜索确认入口类、配置文件和模块边界。
+- 先确认项目的最小启动路径，比如 Docker Compose 一键启动或本地启动步骤。
+- 验证核心接口是否跑通，比如首页、登录、订单查询等 3-5 个关键接口。
 - 优先把“本地缓存 -> Redis 缓存”或“同步调用 -> RocketMQ 异步链路”做成第一阶段改造。
 - 输出时同步写明简历价值，例如延迟预期、吞吐预期或故障隔离收益，但未实测前必须标注“完成后待验证”。
 
@@ -218,8 +219,8 @@
 
 ### 2. 前端 / 全栈配方
 
-- 主查询 (全局发现)：`site:github.com (react OR vue3) (vite OR next.js) (admin OR dashboard OR saas) permission -awesome -notes -template -course`
-- 回退查询 (放宽业务域)：`site:github.com react vite tailwind (management OR workflow) -awesome -tutorial -starter`
+- 主查询 (全局发现)：`site:github.com (react OR vue OR vue3) (vite OR next.js) (admin OR dashboard OR saas) permission -awesome -notes -template -course`
+- 全栈回退查询 (放宽业务域)：`site:github.com (react OR vue) (express OR nest OR fastapi OR gin) fullstack docker-compose -awesome -tutorial`
 - 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] package.json prisma`
 
 ### 3. AI 应用开发配方
@@ -228,4 +229,28 @@
 - 回退查询 (放宽业务域)：`site:github.com rag (retrieval OR embedding) vector database python app -awesome -notes -demo`
 - 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] requirements.txt langchain`
 
-注：如果大模型当前环境调用的是 GitHub 原生搜索工具而非 Google/Bing，请将上述配方中的 `site:github.com` 去除，并将“单点深挖”改写为对应仓库内的文件名或依赖核验查询，不要把 `site:` 与 GitHub 专有搜索语法混写在同一条查询里。
+### 4. Go 后端配方
+
+- 主查询 (全局发现)：`site:github.com (gin OR hertz) (go-zero OR grpc) (redis OR kafka OR rocketmq) docker-compose -awesome -interview -tutorial`
+- 回退查询 (放宽业务域)：`site:github.com go backend (gin OR hertz) fullstack -awesome -course -starter`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] go.mod redis`
+
+### 5. DevOps 配方
+
+- 主查询 (全局发现)：`site:github.com docker kubernetes prometheus grafana jenkins -awesome -notes -tutorial`
+- 回退查询 (放宽业务域)：`site:github.com github actions docker-compose deploy monitor -awesome -starter -boilerplate`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] docker-compose.yml prometheus`
+
+### 6. 数据分析配方
+
+- 主查询 (全局发现)：`site:github.com python sql pandas streamlit dashboard -awesome -course -tutorial`
+- 回退查询 (放宽业务域)：`site:github.com jupyter notebook pandas analytics -awesome -notes -demo`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] requirements.txt pandas`
+
+### 7. 移动端开发配方
+
+- 主查询 (全局发现)：`site:github.com (android OR ios OR flutter OR react native) (sqlite OR realm OR supabase) app -awesome -tutorial -template`
+- 回退查询 (放宽业务域)：`site:github.com flutter mobile app offline cache -awesome -notes -starter`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] pubspec.yaml flutter`
+
+注：如果大模型当前环境调用的是 GitHub 原生搜索工具而非 Google/Bing，排除词应在查询末尾集中改写为 `NOT keyword` 形式，并避免把 `site:` 与 GitHub 专有搜索语法混写在同一条查询里。
