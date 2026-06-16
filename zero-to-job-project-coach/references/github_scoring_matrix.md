@@ -189,34 +189,43 @@
 - Java 后端示例：`site:github.com spring boot redis rocketmq docker-compose order system`。
 - AI 应用示例：`site:github.com RAG langchain vector database docker chatbot`。
 - 前端示例：`site:github.com react dashboard permission vite api`。
-- 如果走 GitHub 原生高级搜索，优先补充文件级信号，例如 `filename:docker-compose.yml` 和 `filename:pom.xml`。
 - 优先寻找中等体量项目，快速信号是 3-15 个核心模块/服务目录，非单文件，非 50+ 微服务的巨型 monorepo；避开单文件玩具、纯教程仓库和过于庞大的基础设施巨兽。
 - 宽泛查询只用于扩展候选池，例如 `Java backend project`；不得直接用宽泛查询结果做最终推荐。
-- 排除关键词：
-  - 非项目内容：awesome、interview、notes、学习笔记、面试题、教程、course
-  - 非独立项目：demo collection、template、starter、boilerplate、脚手架
-  - 学生/培训作业：毕业设计、课程设计、培训作业、后台管理系统
-  - 不可二次开发：ruoyi 等高度封装脚手架
-- 如果候选结果质量差，调整查询后重新搜索，不要硬凑推荐。
-- 调整方向：增加业务场景词、增加 `docker-compose` 或 `README`、换同义技术栈、去掉过窄关键词、改用单仓库深挖。
-- 仓库评估动作盒：每个仓库最多做 1 轮主搜索 + 1 轮补充搜索。超过动作上限仍无法判断启动路径、源码结构或二次开发空间时，降低置信度或放弃该仓库。
 
-## 查询配方库
+**排除关键词（搜索时必须携带负面词缀 `-`）**：
+- 非项目内容：`-awesome -interview -notes -学习笔记 -面试题 -教程 -course`
+- 非独立项目：`-demo -collection -template -starter -boilerplate -脚手架`
+- 学生/培训作业：`-毕业设计 -课程设计 -培训作业 -后台管理系统`
+- 不可二次开发：`-ruoyi -jeecg` 等高度封装脚手架
 
-### Java 后端
+**如果候选结果质量差，调整查询后重新搜索，不要硬凑推荐。**
+- 调整方向：增加业务场景词、换同义技术栈、去掉过窄的细分关键词。
 
-- 主查询：`site:github.com spring boot redis rocketmq docker-compose order system`
-- 补充查询：`site:github.com spring boot redis rocketmq filename:application.yml filename:pom.xml cache OR order OR payment`
-- 回退查询：`site:github.com spring boot redis docker-compose mall OR ecommerce`
+**仓库评估动作盒 (Action Box)**：
+大模型在评估时，每个目标最多允许执行以下动作，超过动作上限仍证据不足，立即降低该仓库置信度或放弃：
+- **全局发现**：最多 2 轮主查询/回退查询。
+- **单点深挖**：针对某个具体候选仓库，最多 1 轮定向补充查询（用于核验配置文件或特定中间件）。
 
-### 前端
+## 严格查询配方库 (Query Recipes)
 
-- 主查询：`site:github.com react admin dashboard permission vite`
-- 补充查询：`site:github.com react vite filename:package.json table OR form OR workflow`
-- 回退查询：`site:github.com react dashboard api management`
+大模型在调用搜索工具时，必须直接套用或拼接以下配方，严禁使用自然语言短句。必须在所有全局搜索末尾携带黑名单词簇。
 
-### AI 应用开发
+### 1. Java 后端配方
 
-- 主查询：`site:github.com rag langchain vector database chatbot`
-- 补充查询：`site:github.com langchain rag filename:requirements.txt retrieval OR embedding OR rerank`
-- 回退查询：`site:github.com llm app chatbot retrieval`
+- 主查询 (全局发现)：`site:github.com "spring boot" (redis OR rocketmq) docker-compose (order OR mall OR payment) -awesome -interview -tutorial -ruoyi -毕业设计`
+- 回退查询 (放宽业务域)：`site:github.com "spring boot" redis docker-compose (system OR platform) -awesome -course -脚手架`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] pom.xml rocketmq`
+
+### 2. 前端 / 全栈配方
+
+- 主查询 (全局发现)：`site:github.com (react OR vue3) (vite OR next.js) (admin OR dashboard OR saas) permission -awesome -notes -template -course`
+- 回退查询 (放宽业务域)：`site:github.com react vite tailwind (management OR workflow) -awesome -tutorial -starter`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] package.json prisma`
+
+### 3. AI 应用开发配方
+
+- 主查询 (全局发现)：`site:github.com (rag OR llm) langchain (milvus OR chroma OR weaviate) chatbot docker -awesome -learning -tutorial`
+- 回退查询 (放宽业务域)：`site:github.com rag (retrieval OR embedding) vector database python app -awesome -notes -demo`
+- 单点深挖 (定向核验某个仓库)：`site:github.com/[开发者]/[仓库名] requirements.txt langchain`
+
+注：如果大模型当前环境调用的是 GitHub 原生搜索工具而非 Google/Bing，请将上述配方中的 `site:github.com` 去除，并将“单点深挖”改写为对应仓库内的文件名或依赖核验查询，不要把 `site:` 与 GitHub 专有搜索语法混写在同一条查询里。
