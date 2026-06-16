@@ -275,15 +275,22 @@ class ZeroToJobProjectCoachV2Test(unittest.TestCase):
         self.assert_contains_all(
             text,
             [
+                "使用规则",
                 "STAR",
                 "低效表达",
                 "高阶表达",
                 "Java 后端",
+                "Go 后端",
                 "前端",
                 "AI 应用开发",
                 "预期目标",
                 "完成后待实测",
                 "不得写成已完成结果",
+                "峰值吞吐提升 20% 到 50%",
+                "故障定位时间",
+                "gin",
+                "go-zero",
+                "消息队列",
                 "技术选型防守需结合 job_execution_playbook.md 的技术选型与踩坑",
                 "场景",
                 "技术选型",
@@ -298,6 +305,7 @@ class ZeroToJobProjectCoachV2Test(unittest.TestCase):
         self.assert_contains_all(
             text,
             [
+                "使用规则",
                 "高压追问",
                 "技术选型与踩坑",
                 "投递执行表",
