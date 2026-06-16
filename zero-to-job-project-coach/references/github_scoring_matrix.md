@@ -200,3 +200,23 @@
 - 如果候选结果质量差，调整查询后重新搜索，不要硬凑推荐。
 - 调整方向：增加业务场景词、增加 `docker-compose` 或 `README`、换同义技术栈、去掉过窄关键词、改用单仓库深挖。
 - 仓库评估动作盒：每个仓库最多做 1 轮主搜索 + 1 轮补充搜索。超过动作上限仍无法判断启动路径、源码结构或二次开发空间时，降低置信度或放弃该仓库。
+
+## 查询配方库
+
+### Java 后端
+
+- 主查询：`site:github.com spring boot redis rocketmq docker-compose order system`
+- 补充查询：`site:github.com spring boot redis rocketmq filename:application.yml filename:pom.xml cache OR order OR payment`
+- 回退查询：`site:github.com spring boot redis docker-compose mall OR ecommerce`
+
+### 前端
+
+- 主查询：`site:github.com react admin dashboard permission vite`
+- 补充查询：`site:github.com react vite filename:package.json table OR form OR workflow`
+- 回退查询：`site:github.com react dashboard api management`
+
+### AI 应用开发
+
+- 主查询：`site:github.com rag langchain vector database chatbot`
+- 补充查询：`site:github.com langchain rag filename:requirements.txt retrieval OR embedding OR rerank`
+- 回退查询：`site:github.com llm app chatbot retrieval`
